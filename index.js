@@ -43,7 +43,6 @@ app.post('/login', function (request, response) {
 // singIn
 app.post('/signIn', function (request, response) {
   const url = parse(request.url)
-
   API.send("signIn", "4", {
       data: {
         phone_code: url["code"],

@@ -62,7 +62,7 @@ public class Crypto {
             String data = args[2];
             
             if (args[1].equals("-e")) {
-                System.out.println(encrypt(data, auth));
+                System.out.println(encrypt(data.replaceAll("\\\\", "\""), auth));
             }
             else if (args[1].equals("-d")) {
                 File myObj = new File(data);
