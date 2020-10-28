@@ -11,10 +11,9 @@
 <script src="https://vjs.zencdn.net/7.2.3/video.js"></script>
 
 <script>
-    const querystring = require('querystring');
-    let query = querystring.parse(global.location.search);
-    let url = query['?url']
-    
+    const urlParams = new URLSearchParams(window.location.search);
+    const url = urlParams.get('url');
+
     if(url.split('.').pop() === "mp4") {
         const video = document.getElementById('video')
         video.style.display = 'block'

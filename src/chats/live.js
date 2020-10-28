@@ -1,5 +1,5 @@
 import React from 'react'
-const { ipcRenderer, shell } = window.require('electron')
+import axios from 'axios'
 
 class Live extends React.Component {
     constructor() {
@@ -23,20 +23,23 @@ class Live extends React.Component {
     }
     play(data, download) {
         if(!this.state.url) {
-            ipcRenderer.on('getUrl:reply', (event, data) => {
-                this.setState({
-                    url: data.play_url
-                }, () => {
-                    download ? 
-                    shell.openExternal(data.play_url) :
-                    ipcRenderer.send("video", data.play_url);
-                })
+            axios.post(`http://localhost/getUrl?auth=${this.props.auth}&access_token=${data.access_token}&live_id=${data.live_id}`)
+            .then((res) => {
+                console.log(res.data)
+                res.data &&
+                    this.setState({
+                        url: res.data.play_url
+                    }, () => {
+                        download ?
+                        window.open(res.data.play_url) :
+                        window.open("video.html?url="+res.data.play_url)
+                    })
             })
-            ipcRenderer.send('getUrl', this.props.auth, data.access_token, data.live_id)    
+            .catch(err => console.log(err))    
         } else {
-            download ? 
-            shell.openExternal(this.state.url) :
-            ipcRenderer.send("video", this.state.url);
+            download ?
+            window.open(this.state.url) :
+            window.open("video.html?url="+this.state.url)
         }
     }
     render() {

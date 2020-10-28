@@ -2,7 +2,7 @@ import React from 'react';
 import ChatsList from './chats/list';
 import ChatMessages from './chats/messages'
 import 'bootstrap/dist/css/bootstrap.min.css';
-const { ipcRenderer } = window.require('electron')
+import axios from 'axios';
 
 class Chats extends React.Component {
   constructor() {
@@ -25,34 +25,35 @@ class Chats extends React.Component {
   getChats() {
     !this.state.chats.length &&
       this.setState({chats: []})
-      ipcRenderer.on('chats:reply', (event, chats) => {
-        if(!chats) this.setState({chats: false})
-        else
-          this.setState({
-            chats: chats.chats
-          })
-      })
-      ipcRenderer.send('chats', this.props.auth)
+
+    axios.post('http://localhost/chats?auth=' + this.props.auth)
+    .then((res) => {
+      console.log(res.data)
+      if(!res.data) this.setState({chats: false})
+      else
+        this.setState({
+          chats: res.data.chats
+        })
+    })
+    .catch(err => this.setState({chats: false}))
   }
   getMessages() {
     if(this.state.messages.old_has_continue) {
       this.setState({msgLoading: true, messages: []})
-      ipcRenderer.on('messages:reply', (event, messages) => {
-        if(!messages) this.setState({messages: false, msgLoading: false})
+
+      axios.post(`http://localhost/messages?auth=${this.props.auth}&object_guid=${this.state.current_chat.object_guid}&msg_id=${this.state.lastMsgid}`)
+      .then((res) => {
+        console.log(res.data)
+        if(!res.data) this.setState({messages: false, msgLoading: false})
         else {
           this.setState({
-            messages: messages,
-            lastMsgid: messages.old_max_id,
+            messages: res.data,
+            lastMsgid: res.data.old_max_id,
             msgLoading: false
           })
         }
       })
-      ipcRenderer.send(
-        'messages',
-        this.props.auth,
-        this.state.lastMsgid,
-        this.state.current_chat.object_guid
-      )
+      .catch(err => this.setState({messages: false, msgLoading: false}))  
     }
   }
   chChat(index) {
@@ -71,35 +72,34 @@ class Chats extends React.Component {
   }
   componentDidMount() {
     !this.state.chats.length &&
-      ipcRenderer.on('chats:reply', (event, chats) => {
-        if(!chats) this.setState({chats: false})
+      axios.post('http://localhost/chats?auth=' + this.props.auth)
+      .then((res) => {
+        console.log(res.data)
+        if(!res.data) this.setState({chats: false})
         else
           this.setState({
-            chats: chats.chats,
-            mainChats: chats
+            chats: res.data.chats,
+            mainChats: res.data
           })
       })
-      ipcRenderer.send('chats', this.props.auth)
+      .catch(err => this.setState({chats: false}))
   }
   componentDidUpdate(prevProps, prevState) {
     if(prevState.current_chat.object_guid !== this.state.current_chat.object_guid) {
       this.setState({msgLoading: true, messages: []})
-      
-      ipcRenderer.on('messages:reply', (event, messages) => {
-        if(!messages) this.setState({messages: false, msgLoading: false})
-        else
-          this.setState({
-            messages: messages,
-            lastMsgid: messages.old_max_id,
-            msgLoading: false
-          })
-      })
-      ipcRenderer.send(
-        'messages',
-        this.props.auth,
-        this.state.current_chat.last_message_id,
-        this.state.current_chat.object_guid
-      )
+
+      axios.post(`http://localhost/messages?auth=${this.props.auth}&object_guid=${this.state.current_chat.object_guid}&msg_id=${this.state.current_chat.last_message_id}`)
+        .then((res) => {
+          console.log(res.data)
+          if(!res.data) this.setState({messages: false, msgLoading: false})
+          else
+            this.setState({
+              messages: res.data,
+              lastMsgid: res.data.old_max_id,
+              msgLoading: false
+            })
+        })
+        .catch(err => this.setState({messages: false, msgLoading: false}))  
     }
   }
   render() {

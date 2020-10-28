@@ -40,7 +40,7 @@ class Auth extends React.Component {
                         document.getElementById("code").style.display = "block"
                     } else this.setState({btn: "Error: try again"})
                 })
-                .catch(err => console.log(err))
+                .catch(err => this.setState({btn: "Error: try again"}))
                 this.setState({btn: "Send Number..."})
             }
             else this.setState({btn: "Wrong format"})
@@ -57,7 +57,7 @@ class Auth extends React.Component {
                     else 
                         this.props.chAuth(res.data.data.auth)
                 })
-                .catch(err => console.log(err))
+                .catch(err => this.setState({btn: "Error: try again"}))
                 this.setState({btn: "Send Code..."})
             }
             else this.setState({btn: "Wrong format"})
@@ -74,7 +74,7 @@ class Auth extends React.Component {
                 <input onChange={this.code} value={this.state.code} type="text" maxLength="6" className="input" id="code" placeholder="Verification Code"/>
             </div>
             <button className="submit" id="submit" onClick={this.login}>{this.state.btn}</button>
-            <a href="#sdf" target="_blank">ایا این وبسایت امن هست؟</a>
+            <a href="https://github.com/MainSilent/Go_Shad_Web" target="_blank">ایا این وب سایت امن هست؟</a>
         </div>
         )
     }

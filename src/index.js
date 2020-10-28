@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Auth from './auth';
-// import Chats from './chats';
+import Chats from './chats';
 import Cookies from 'js-cookie';
 
 class Home extends React.Component {
@@ -27,8 +27,7 @@ class Home extends React.Component {
           !this.state.auth ?
           <Auth chAuth={this.chAuth.bind(this)}/>
           :
-          // <Chats auth={this.state.auth}/>
-          <h1>{this.state.auth}</h1>
+          <Chats auth={this.state.auth}/>
       }
       </div>
     </div>

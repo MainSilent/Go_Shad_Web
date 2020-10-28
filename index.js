@@ -6,7 +6,6 @@ const findRemoveSync = require('find-remove')
 const API = require('./lib/api')
 const crypto = require('./lib/crypto')
 const Str = require('@supercharge/strings')
-//require("./lib/chats")
 
 function parse(queryString) {
   var query = {};
@@ -77,6 +76,55 @@ app.post('/signIn', function (request, response) {
       status: "false",
       status_det: "false"
     }))
+})
+// chats
+app.post('/chats', function (request, response) {
+  const auth = parse(request.url)["/chats?auth"]
+  API.send("getChats", "4", {
+    auth: auth
+  }).then(res => {
+    crypto.decrypt(auth, res.data_enc).then(res => {
+      response.send(JSON.parse(res))
+    }).catch(err => response.send(false))
+  }).catch(err => response.send(false))
+})
+// messages
+app.post('/messages', function (request, response) {
+  const url = parse(request.url)
+  const auth = url["/messages?auth"]
+
+  crypto.encrypt(auth, {
+    middle_message_id: url['msg_id'],
+    object_guid: url['object_guid']
+  }).then(data_enc => {
+    API.send("getMessagesInterval", "4", {
+      auth: auth,
+      data_enc: data_enc
+    }).then(res => {
+      crypto.decrypt(auth, res.data_enc).then(res => {
+        response.send(JSON.parse(res))
+      }).catch(err => response.send(false))
+    }).catch(err => response.send(false))
+  }).catch(err => response.send(false))
+})
+// getUrl
+app.post('/getUrl', function (request, response) {
+  const url = parse(request.url)
+  const auth = url["/getUrl?auth"]
+
+  crypto.encrypt(auth, {
+      access_token: url['access_token'],
+      live_id: url['live_id']
+  }).then(data_enc => {
+      API.send("getLivePlayUrl", "4", {
+          auth: auth,
+          data_enc: data_enc
+      }).then(res => {
+          crypto.decrypt(auth, res.data_enc).then(res => {
+              response.send(JSON.parse(res))
+          }).catch(err => response.send(false))
+      }).catch(err => response.send(false))
+  }).catch(err => response.send(false))
 })
 
 //clean tmp directory and logs
