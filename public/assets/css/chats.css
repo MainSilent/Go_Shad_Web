@@ -380,11 +380,6 @@
 
 /* Loader */
 
-.loader-container {
-    border: 1px solid white;
-    border-radius: 6px;
-}
-
 .loader {
     position: absolute;
     border-radius: 50%;
@@ -409,4 +404,14 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+.text-loader {
+    content: '' !important;
+    cursor: default;
+    border-radius: 6px;
+    background-color: transparent !important;
+    font-size: 45px;
+    margin: auto;
+    margin-top: 42px !important;
 }

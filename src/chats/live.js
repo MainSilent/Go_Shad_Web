@@ -5,7 +5,8 @@ class Live extends React.Component {
     constructor() {
         super ()
         this.state = {
-            url: ""
+            url: "",
+            loading: false
         }
     }
     formatDate(timestamp) {
@@ -22,24 +23,29 @@ class Live extends React.Component {
         return rhours + ":" + (rminutes<10?'0':'') + rminutes;
     }
     play(data, download) {
+        this.setState({loading: true})
+
         if(!this.state.url) {
-            axios.post(`http://localhost/getUrl?auth=${this.props.auth}&access_token=${data.access_token}&live_id=${data.live_id}`)
+            axios.post(`getUrl?auth=${this.props.auth}&access_token=${data.access_token}&live_id=${data.live_id}`)
             .then((res) => {
                 console.log(res.data)
-                res.data &&
+                res.data ?
                     this.setState({
-                        url: res.data.play_url
+                        url: res.data.play_url,
+                        loading: false
                     }, () => {
                         download ?
                         window.open(res.data.play_url) :
                         window.open("video.html?url="+res.data.play_url)
-                    })
+                    }) : this.setState({loading: false})
             })
-            .catch(err => console.log(err))    
+            .catch(err => this.setState({loading: false}))    
         } else {
             download ?
             window.open(this.state.url) :
             window.open("video.html?url="+this.state.url)
+
+            this.setState({loading: false})
         }
     }
     render() {
@@ -58,13 +64,19 @@ class Live extends React.Component {
                     </> : 
                     <div className="live_detail">
                         <p>{this.timeConvert(this.props.message.live_data.live_status.duration)}</p>
-                        <img 
-                            src="assets/images/download.png"
-                            onClick={() => this.play(this.props.message.live_data, true)}
-                            style={this.props.message.live_data.live_status.status === "InProgress" ? {visibility: "hidden"} : {}}
-                            alt="download"
-                        />
-                        <img src="assets/images/play.png" onClick={() => this.play(this.props.message.live_data)} alt="play"/>
+                        {this.state.loading ?
+                            <p className="text-loader">...</p> 
+                            :
+                            <>
+                            <img 
+                                src="assets/images/download.png"
+                                onClick={() => this.play(this.props.message.live_data, true)}
+                                style={this.props.message.live_data.live_status.status === "InProgress" ? {visibility: "hidden"} : {}}
+                                alt="download"
+                            />
+                            <img src="assets/images/play.png" onClick={() => this.play(this.props.message.live_data)} alt="play"/>
+                            </>
+                        }
                     </div>
                 }
                 <figcaption>

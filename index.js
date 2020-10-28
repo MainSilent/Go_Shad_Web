@@ -1,7 +1,7 @@
 const express = require('express')
-const app = express()
 const cors = require('cors')
 const fs = require('fs')
+const path = require('path')
 const findRemoveSync = require('find-remove')
 const API = require('./lib/api')
 const crypto = require('./lib/crypto')
@@ -17,10 +17,13 @@ function parse(queryString) {
   return query;
 }
 
-// index
+const app = express()
+app.use(express.static(path.join(__dirname, 'build')))
 app.use(cors())
+
+// index
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/index.html')
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 app.listen(80)
 // login

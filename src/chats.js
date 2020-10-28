@@ -26,7 +26,7 @@ class Chats extends React.Component {
     !this.state.chats.length &&
       this.setState({chats: []})
 
-    axios.post('http://localhost/chats?auth=' + this.props.auth)
+    axios.post('chats?auth=' + this.props.auth)
     .then((res) => {
       console.log(res.data)
       if(!res.data) this.setState({chats: false})
@@ -40,8 +40,7 @@ class Chats extends React.Component {
   getMessages() {
     if(this.state.messages.old_has_continue) {
       this.setState({msgLoading: true, messages: []})
-
-      axios.post(`http://localhost/messages?auth=${this.props.auth}&object_guid=${this.state.current_chat.object_guid}&msg_id=${this.state.lastMsgid}`)
+      axios.post(`messages?auth=${this.props.auth}&object_guid=${this.state.current_chat.object_guid}&msg_id=${this.state.lastMsgid}`)
       .then((res) => {
         console.log(res.data)
         if(!res.data) this.setState({messages: false, msgLoading: false})
@@ -54,7 +53,7 @@ class Chats extends React.Component {
         }
       })
       .catch(err => this.setState({messages: false, msgLoading: false}))  
-    }
+    } else window.location.reload()
   }
   chChat(index) {
     index === "all" ?
@@ -72,7 +71,7 @@ class Chats extends React.Component {
   }
   componentDidMount() {
     !this.state.chats.length &&
-      axios.post('http://localhost/chats?auth=' + this.props.auth)
+      axios.post('chats?auth=' + this.props.auth)
       .then((res) => {
         console.log(res.data)
         if(!res.data) this.setState({chats: false})
@@ -85,10 +84,10 @@ class Chats extends React.Component {
       .catch(err => this.setState({chats: false}))
   }
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.current_chat.object_guid !== this.state.current_chat.object_guid) {
+    if(prevState.current_chat.object_guid !== this.state.current_chat.object_guid && this.state.index !== "all") {
       this.setState({msgLoading: true, messages: []})
 
-      axios.post(`http://localhost/messages?auth=${this.props.auth}&object_guid=${this.state.current_chat.object_guid}&msg_id=${this.state.current_chat.last_message_id}`)
+      axios.post(`messages?auth=${this.props.auth}&object_guid=${this.state.current_chat.object_guid}&msg_id=${this.state.current_chat.last_message_id}`)
         .then((res) => {
           console.log(res.data)
           if(!res.data) this.setState({messages: false, msgLoading: false})

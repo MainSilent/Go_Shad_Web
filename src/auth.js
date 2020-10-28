@@ -28,7 +28,7 @@ class Auth extends React.Component {
         if(!this.state.sendCode)
         {
             if(this.state.number.length === 11 && /^(\+98|0098|98|0)?9\d{9}$/.test(this.state.number)) {
-                axios.post('http://localhost/login?phone_number=' + this.state.number.replace(/0/, "98"))
+                axios.post('login?phone_number=' + this.state.number.replace(/0/, "98"))
                 .then((res) => {
                   console.log(res.data)
                     if(res.data.status === "OK" && res.data.status_det === "OK") {
@@ -47,7 +47,7 @@ class Auth extends React.Component {
         }
         else {
             if(this.state.code.length === 6) {
-                axios.post(`http://localhost/signIn?phone_number=${this.state.number.replace(/0/, "98")}&code=${this.state.code}&data=${JSON.stringify(this.state.signInData)}`)
+                axios.post(`signIn?phone_number=${this.state.number.replace(/0/, "98")}&code=${this.state.code}&data=${JSON.stringify(this.state.signInData)}`)
                 .then((res) => {
                     console.log(res.data)
                     if(res.data.status !== "OK" && res.data.status_det !== "OK")
@@ -74,7 +74,7 @@ class Auth extends React.Component {
                 <input onChange={this.code} value={this.state.code} type="text" maxLength="6" className="input" id="code" placeholder="Verification Code"/>
             </div>
             <button className="submit" id="submit" onClick={this.login}>{this.state.btn}</button>
-            <a href="https://github.com/MainSilent/Go_Shad_Web" target="_blank">ایا این وب سایت امن هست؟</a>
+            <a href="https://github.com/MainSilent/Go_Shad_Web">ایا این وب سایت امن هست؟</a>
         </div>
         )
     }
