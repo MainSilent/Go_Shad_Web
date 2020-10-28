@@ -70,7 +70,7 @@ app.post('/signIn', function (request, response) {
               response.send(res)
             else response.send({
               status: "false",
-              status_det: "OK"
+              status_det: "false"
             })
           }).catch(err => console.log(err))
         }).catch(err => console.log(err))
