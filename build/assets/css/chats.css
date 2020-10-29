@@ -415,3 +415,54 @@
     margin: auto;
     margin-top: 42px !important;
 }
+
+.menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-top: 10px;
+    margin-left: 18px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    padding: 5px;
+    z-index: 1;
+}
+
+.menu .bar1,
+.menu .bar2,
+.menu .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+@media screen and (max-width: 800px) {
+    .menu {
+        display: block;
+    }
+    .active {
+        background: transparent;
+    }
+    .contacts li:first-child {
+        display: none;
+    }
+    .contacts li:hover {
+        background-color: transparent;
+    }
+    .msg_card,
+    .contacts_card {
+        width: 98%;
+    }
+    .user_info span {
+        font-size: 15px;
+    }
+    .user_info p {
+        font-size: 10px;
+    }
+    .msg_head {
+        display: none;
+    }
+}

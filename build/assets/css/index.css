@@ -19,7 +19,9 @@
 }
 
 body {
+    min-height: calc(100vh - 56px);
     background-image: url(../images/background.jpg);
+    background-repeat: no-repeat;
     /* background-image:linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5); */
     background-attachment: fixed;
     background-position: center;
