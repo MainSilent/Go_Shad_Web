@@ -51,7 +51,7 @@ app.post('/signIn', function (request, response) {
       }
     })
     .then(res => {
-      res.status === "OK" && res.status_det === "OK" &&
+      if(res.status === "OK" && res.status_det === "OK")
         crypto.encrypt(res.data.auth, {
           app_version: "MA_2.6.3",
           device_hash: Str.random(32),
@@ -73,6 +73,7 @@ app.post('/signIn', function (request, response) {
             })
           }).catch(err => console.log(err))
         }).catch(err => console.log(err))
+      else response.send(res)
     })
     .catch(err => response.send({
       status: "false",
