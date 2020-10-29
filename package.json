@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "index.js",
+  "proxy": "http://localhost:80",
   "dependencies": {
     "@supercharge/strings": "^1.15.0",
     "axios": "^0.21.0",

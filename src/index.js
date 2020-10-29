@@ -16,7 +16,7 @@ class Home extends React.Component {
     this.setState({
         auth: auth
     }, () => {
-      Cookies.set('auth', auth)
+      Cookies.set('auth', auth, { secure: true })
     })
   }
   render() {

@@ -70,8 +70,8 @@ class Auth extends React.Component {
             <div className="topbar">
                 <img src="assets/images/icon.png" alt="گشاد"/>
                 <div className="spanColor"></div>
-                <input onChange={this.number} value={this.state.number} type="text" maxLength="11" className="input" id="number" placeholder="Phone Number"/>
-                <input onChange={this.code} value={this.state.code} type="text" maxLength="6" className="input" id="code" placeholder="Verification Code"/>
+                <input onChange={this.number} value={this.state.number} type="text" maxLength="11" className="input" id="number" inputMode="numeric" placeholder="Phone Number"/>
+                <input onChange={this.code} value={this.state.code} type="text" maxLength="6" className="input" id="code" inputMode="numeric" placeholder="Verification Code"/>
             </div>
             <button className="submit" id="submit" onClick={this.login}>{this.state.btn}</button>
             <a href="https://github.com/MainSilent/Go_Shad_Web">آیا این وب سایت امن هست؟</a>

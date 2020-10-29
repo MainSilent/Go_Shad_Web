@@ -40,7 +40,7 @@ class ChatsMessages extends React.Component {
                         <Live key={index} auth={this.props.auth} message={this.props.messages.messages[index]}/>
                     )}
                     {this.props.messages === false && 
-                        <p className="retry-btn msg" onClick={this.props.retry}>Error: Try reload</p> 
+                        <p className="retry-btn msg" onClick={this.props.retry}>Error: Try refresh</p> 
                     }
                 </ul>
                 {this.props.messages.old_has_continue &&
