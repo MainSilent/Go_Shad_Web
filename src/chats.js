@@ -74,7 +74,13 @@ class Chats extends React.Component {
         })
   }
   componentDidMount() {
-    $(".msg_card").hide()
+    $("body").width() < 800 &&
+      $(".msg_card").hide()
+    $(window).on("resize", () => {
+      $("body").width() < 800 ?
+        $(".msg_card").hide() :
+        $(".msg_card, .contacts_card").show()
+    })
 
     !this.state.chats.length &&
       axios.post('chats?auth=' + this.props.auth)
@@ -92,7 +98,8 @@ class Chats extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if(prevState.current_chat.object_guid !== this.state.current_chat.object_guid && this.state.index !== "all") {
       this.setState({msgLoading: true, messages: []})
-      $(".contacts_card, .msg_card").toggle()
+      $("body").width() < 800 &&
+        $(".contacts_card, .msg_card").toggle()
       
       axios.post(`messages?auth=${this.props.auth}&object_guid=${this.state.current_chat.object_guid}&msg_id=${this.state.current_chat.last_message_id}`)
         .then((res) => {
