@@ -78,8 +78,13 @@ class Chats extends React.Component {
       $(".msg_card").hide()
     $(window).on("resize", () => {
       if($("body").width() < 800) {
-        $(".msg_card").hide()
-        $(".contacts_card").show()
+        if(this.state.index === "all") {
+          $(".msg_card").hide()
+          $(".contacts_card").show()
+        } else {
+          $(".msg_card").show()
+          $(".contacts_card").hide() 
+        }
       }
       else
         $(".msg_card, .contacts_card").show()
