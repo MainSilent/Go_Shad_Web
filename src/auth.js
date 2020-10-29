@@ -74,7 +74,7 @@ class Auth extends React.Component {
                 <input onChange={this.code} value={this.state.code} type="text" maxLength="6" className="input" id="code" placeholder="Verification Code"/>
             </div>
             <button className="submit" id="submit" onClick={this.login}>{this.state.btn}</button>
-            <a href="https://github.com/MainSilent/Go_Shad_Web">ایا این وب سایت امن هست؟</a>
+            <a href="https://github.com/MainSilent/Go_Shad_Web">آیا این وب سایت امن هست؟</a>
         </div>
         )
     }
